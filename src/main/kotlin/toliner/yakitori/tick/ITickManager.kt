@@ -11,6 +11,5 @@ interface ITickManager {
     operator fun plusAssign(worker: ITickWorker)
     operator fun minusAssign(worker: ITickWorker)
 
-    fun start()
-    fun stop()
+    fun run()
 }
