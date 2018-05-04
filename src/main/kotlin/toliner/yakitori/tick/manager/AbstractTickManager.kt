@@ -1,4 +1,7 @@
-package toliner.yakitori.tick
+package toliner.yakitori.tick.manager
+
+import toliner.yakitori.tick.ITickManager
+import toliner.yakitori.tick.ITickWorker
 
 abstract class AbstractTickManager : ITickManager {
 
