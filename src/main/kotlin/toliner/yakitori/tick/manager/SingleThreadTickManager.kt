@@ -2,7 +2,7 @@ package toliner.yakitori.tick.manager
 
 import toliner.yakitori.tick.ITickWorker
 
-class SingleThreadTickManager(private val tickRate: Long, override val workers: MutableList<ITickWorker> = ArrayList()) : AbstractTickManager(){
+class SingleThreadTickManager(private val tickRate: Int, override val workers: MutableList<ITickWorker> = ArrayList()) : AbstractTickManager(){
 
     init {
         if (tickRate <= 0) {
@@ -10,7 +10,7 @@ class SingleThreadTickManager(private val tickRate: Long, override val workers: 
         }
     }
 
-    private var oldTime = 0L
+    private var oldTime = System.currentTimeMillis()
     private var tickCount = 0L
     set(value) {
         val count = value % tickRate
@@ -24,10 +24,14 @@ class SingleThreadTickManager(private val tickRate: Long, override val workers: 
 
     override fun run() {
         while (true) {
+            tickCount++
             for (worker in workers) {
                 worker.onTick()
             }
-            tickCount++
+            val delay = (1000 / tickRate) - System.currentTimeMillis() + oldTime
+            if (delay > 0) {
+                Thread.sleep(delay)
+            }
         }
     }
 }
