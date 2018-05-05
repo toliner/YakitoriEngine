@@ -13,6 +13,13 @@ import toliner.yakitori.tick.ITickWorker
 import java.util.*
 
 class TimerTickManager(private val tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : AbstractTickManager(), IPauseableTickManager {
+
+    init {
+        if (tickRate <= 0) {
+            throw IllegalArgumentException("tickRate must be positive")
+        }
+    }
+
     override val workers: MutableList<ITickWorker> = Collections.synchronizedList(workerList)!!
     private val timer = Timer()
     private val tickTime = 1000 / tickRate
