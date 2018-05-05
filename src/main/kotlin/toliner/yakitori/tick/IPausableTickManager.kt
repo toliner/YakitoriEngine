@@ -10,5 +10,5 @@ package toliner.yakitori.tick
 
 interface IPausableTickManager: ITickManager {
     fun start()
-    fun stop()
+    fun pause()
 }

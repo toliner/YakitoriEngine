@@ -52,7 +52,7 @@ class TimerTickManager(private val tickRate: Long, workerList: MutableList<ITick
         run()
     }
 
-    override fun stop() {
+    override fun pause() {
         timer.cancel()
     }
 }
