@@ -8,11 +8,11 @@
 
 package toliner.yakitori.tick.manager
 
-import toliner.yakitori.tick.IPauseableTickManager
+import toliner.yakitori.tick.IPausableTickManager
 import toliner.yakitori.tick.ITickWorker
 import java.util.*
 
-class TimerTickManager(private val tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : AbstractTickManager(), IPauseableTickManager {
+class TimerTickManager(private val tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : AbstractTickManager(), IPausableTickManager {
 
     init {
         if (tickRate <= 0) {

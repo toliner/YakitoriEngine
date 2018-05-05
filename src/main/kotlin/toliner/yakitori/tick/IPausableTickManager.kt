@@ -8,7 +8,7 @@
 
 package toliner.yakitori.tick
 
-interface IPauseableTickManager: ITickManager {
+interface IPausableTickManager: ITickManager {
     fun start()
     fun stop()
 }
