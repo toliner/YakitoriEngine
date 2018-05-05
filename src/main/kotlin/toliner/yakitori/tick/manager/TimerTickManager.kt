@@ -12,7 +12,7 @@ import toliner.yakitori.tick.IPausableTickManager
 import toliner.yakitori.tick.ITickWorker
 import java.util.*
 
-abstract class TimerTickManager(protected val tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : AbstractTickManager(), IPausableTickManager {
+abstract class TimerTickManager(tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : AbstractTickManager(), IPausableTickManager {
 
     init {
         if (tickRate <= 0) {
