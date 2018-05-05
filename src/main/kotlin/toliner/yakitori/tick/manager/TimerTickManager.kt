@@ -12,7 +12,7 @@ import toliner.yakitori.tick.IPausableTickManager
 import toliner.yakitori.tick.ITickWorker
 import java.util.*
 
-class TimerTickManager(private val tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : AbstractTickManager(), IPausableTickManager {
+abstract class TimerTickManager(protected val tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : AbstractTickManager(), IPausableTickManager {
 
     init {
         if (tickRate <= 0) {
@@ -21,31 +21,12 @@ class TimerTickManager(private val tickRate: Long, workerList: MutableList<ITick
     }
 
     override val workers: MutableList<ITickWorker> = Collections.synchronizedList(workerList)!!
-    private val timer = Timer()
-    private val tickTime = 1000 / tickRate
+    protected val timer = Timer()
+    protected val tickTime = 1000 / tickRate
+    protected abstract val task: TimerTask
 
     override fun run() {
-        timer.schedule(object : TimerTask() {
-            private var oldTime = 0L
-            private var tickCount = 0L
-                set(value) {
-                    val count = value % tickRate
-                    if (count == 0L) {
-                        val now = System.currentTimeMillis()
-                        tps = count / (now - oldTime).toFloat()
-                        oldTime = now
-                    }
-                    field = count
-                }
-
-            override fun run() {
-                tickCount++
-                for (worker in workers) {
-                    worker.onTick()
-                }
-                timer.schedule(this, tickTime - System.currentTimeMillis() + oldTime)
-            }
-        }, 0)
+        timer.schedule(task, 0)
     }
 
     override fun start() {
