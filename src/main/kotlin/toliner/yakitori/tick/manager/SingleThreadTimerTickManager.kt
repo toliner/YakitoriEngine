@@ -12,25 +12,9 @@ import toliner.yakitori.tick.ITickWorker
 import java.util.*
 
 class SingleThreadTimerTickManager(tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : TimerTickManager(tickRate, workerList) {
-    override val task = object : TimerTask() {
-        private var oldTime = 0L
-        private var tickCount = 0L
-            set(value) {
-                val count = value % tickRate
-                if (count == 0L) {
-                    val now = System.currentTimeMillis()
-                    tps = count / (now - oldTime).toFloat()
-                    oldTime = now
-                }
-                field = count
-            }
-
-        override fun run() {
-            tickCount++
-            for (worker in workers) {
-                worker.onTick()
-            }
-            timer.schedule(this, tickTime - System.currentTimeMillis() + oldTime)
+    override fun handle() {
+        for (worker in workers) {
+            worker.onTick()
         }
     }
 }

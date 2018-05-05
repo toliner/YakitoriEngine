@@ -21,9 +21,27 @@ abstract class TimerTickManager(tickRate: Long, workerList: MutableList<ITickWor
     }
 
     override val workers: MutableList<ITickWorker> = Collections.synchronizedList(workerList)!!
-    protected val timer = Timer()
-    protected val tickTime = 1000 / tickRate
-    protected abstract val task: TimerTask
+    private val timer = Timer()
+    private val tickTime = 1000 / tickRate
+    private val task = object : TimerTask() {
+        private var oldTime = 0L
+        private var tickCount = 0L
+            set(value) {
+                val count = value % tickRate
+                if (count == 0L) {
+                    val now = System.currentTimeMillis()
+                    tps = count / (now - oldTime).toFloat()
+                    oldTime = now
+                }
+                field = count
+            }
+
+        override fun run() {
+            tickCount++
+            handle()
+            timer.schedule(this, tickTime - System.currentTimeMillis() + oldTime)
+        }
+    }
 
     override fun run() {
         timer.schedule(task, 0)
@@ -36,4 +54,6 @@ abstract class TimerTickManager(tickRate: Long, workerList: MutableList<ITickWor
     override fun pause() {
         timer.cancel()
     }
+
+    abstract fun handle()
 }

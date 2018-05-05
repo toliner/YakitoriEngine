@@ -13,31 +13,15 @@ import toliner.yakitori.tick.ITickWorker
 import java.util.*
 
 class ParallelTickManager(tickRate: Long, workerList: MutableList<ITickWorker> = LinkedList()) : TimerTickManager(tickRate, workerList) {
-    override val task = object : TimerTask() {
-        private var oldTime = 0L
-        private var tickCount = 0L
-            set(value) {
-                val count = value % tickRate
-                if (count == 0L) {
-                    val now = System.currentTimeMillis()
-                    tps = count / (now - oldTime).toFloat()
-                    oldTime = now
+    override fun handle() {
+        launch {
+            workers.map {
+                launch {
+                    it.onTick()
                 }
-                field = count
+            }.forEach {
+                it.join()
             }
-
-        override fun run() {
-            tickCount++
-            launch {
-                workers.map {
-                    launch {
-                        it.onTick()
-                    }
-                }.forEach {
-                    it.join()
-                }
-            }
-            timer.schedule(this, tickTime - System.currentTimeMillis() + oldTime)
         }
     }
 }
