@@ -48,6 +48,7 @@ dokka {
     moduleName = 'YakitoriEngine'
     jdkVersion = 8
     impliedPlatforms = ["JVM"]
+    includes = ['packages.md']
     linkMapping {
         dir = "src/main/kotlin"
         url = "https://github.com/toliner/YakitoriEngine/blob/master/src/main/kotlin"
