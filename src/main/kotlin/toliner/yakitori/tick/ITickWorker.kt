@@ -8,6 +8,13 @@
 
 package toliner.yakitori.tick
 
+/**
+ * tick処理を行うオブジェクトが実装すべきインターフェースです。
+ * 全てのインスタンスは[ITickManager]で管理されます。
+ */
 interface ITickWorker {
+    /**
+     * [ITickManager]から呼ばれる、tick処理です。
+     */
     fun onTick()
 }

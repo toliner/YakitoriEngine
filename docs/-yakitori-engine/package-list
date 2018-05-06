@@ -1,0 +1,5 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+
+toliner.yakitori.tick
+toliner.yakitori.tick.manager

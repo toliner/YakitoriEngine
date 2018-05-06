@@ -8,7 +8,19 @@
 
 package toliner.yakitori.tick
 
-interface IPausableTickManager: ITickManager {
+/**
+ * 中断と再開が可能な[ITickManager]です。
+ * 途中で中断する可能性がある場合、[run]ではなく[start]を使って開始してください。
+ */
+interface IPausableTickManager : ITickManager {
+    /**
+     * tick処理を、中断可能な形で開始します。
+     * 中断されている場合は再開します。
+     */
     fun start()
+
+    /**
+     * tick処理を中断します。
+     */
     fun pause()
 }
