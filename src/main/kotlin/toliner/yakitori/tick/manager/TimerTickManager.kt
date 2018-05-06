@@ -44,7 +44,7 @@ abstract class TimerTickManager(tickRate: Long, workerList: MutableList<ITickWor
     /**
      * tick処理に用いられる[TimerTask]です。
      * [workers]のtick処理、tpsの更新、次のtick処理のスケジュールを行います。
-     * tick処理は[handle]に委譲されます。
+     * tick処理は[TimerTickManager.handle]に委譲されます。
      */
     private val task = object : TimerTask() {
         /**
@@ -68,7 +68,7 @@ abstract class TimerTickManager(tickRate: Long, workerList: MutableList<ITickWor
 
         /**
          * 実際の処理を行います。
-         * tick処理は[handle]に委譲されます。
+         * tick処理は[TimerTickManager.handle]に委譲されます。
          */
         override fun run() {
             tickCount++
