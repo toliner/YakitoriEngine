@@ -11,11 +11,21 @@ package toliner.yakitori.tick.manager
 import toliner.yakitori.tick.ITickManager
 import toliner.yakitori.tick.ITickWorker
 
+/**
+ * 全ての[ITickManager]の標準実装の基底となる抽象クラスです。
+ */
 abstract class AbstractTickManager : ITickManager {
 
+    /**
+     * 管理対象の[ITickWorker]の参照を保持する可変リストです。
+     */
     protected abstract val workers: MutableList<ITickWorker>
+    /**
+     * [ITickManager]で定義された[ITickManager.tps]の実装です。
+     * 動的な更新を行うために、protectedなセッターが追加で実装されています。
+     */
     override var tps = 0f
-    protected set
+        protected set
 
     override fun addWorker(worker: ITickWorker) {
         workers.add(worker)
