@@ -1,11 +1,14 @@
 buildscript {
     ext.kotlin_version = '1.2.41'
+    ext.dokka_version = '0.9.16'
 
     repositories {
         mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
     }
 }
 
@@ -13,6 +16,7 @@ group 'toliner.yakitori'
 version '0.1.0'
 
 apply plugin: 'kotlin'
+apply plugin: 'org.jetbrains.dokka'
 
 repositories {
     mavenCentral()
@@ -36,4 +40,18 @@ kotlin {
     experimental {
         coroutines 'enable'
     }
+}
+
+dokka {
+    outputFormat = 'gfm'
+    outputDirectory = 'docs'
+    moduleName = 'YakitoriEngine'
+    jdkVersion = 8
+    impliedPlatforms = ["JVM"]
+    linkMapping {
+        dir = "src/main/kotlin"
+        url = "https://github.com/toliner/YakitoriEngine/blob/master/src/main/kotlin"
+        suffix = "#L"
+    }
+
 }
